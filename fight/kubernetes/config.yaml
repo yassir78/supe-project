@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fight-config
+data:
+  villains-service-host: "villains-svc"
+  villains-service-port: "8080"
+  heroes-service-host: "heroes-svc"
+  heroes-service-port: "8080"

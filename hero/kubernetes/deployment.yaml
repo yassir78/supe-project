@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: heroes-service
+  labels:
+    app: heroes-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: heroes-service
+  template:
+    metadata:
+      labels:
+        app: heroes-service
+    spec:
+      containers:
+      - name: heroes-service
+        image: chaosmaker/heroes-service:1.0.0
+        ports:
+        - name: http
+          containerPort: 8080
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: DATABASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: heroes-config
+                key: database
+          - name: DATABASE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: heroes-database-secret
+                key: username
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: heroes-database-secret
+                key: password

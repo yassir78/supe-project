@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: villains-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: villains-service
+  ports:
+  - port: 8080
+    targetPort: http

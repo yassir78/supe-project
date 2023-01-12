@@ -1,0 +1,47 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fight-service
+  labels:
+    app: fight-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: fight-service
+  template:
+    metadata:
+      labels:
+        app: fight-service
+    spec:
+      containers:
+      - name: fight-service
+        image: chaosmaker/fight-service:1.0.1
+        ports:
+        - name: http
+          containerPort: 8080
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: VILLAINS_SERVICE_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: fight-config
+                key: villains-service-host
+          - name: VILLAINS_SERVICE_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: fight-config
+                key: villains-service-port
+          - name: HEROES_SERVICE_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: fight-config
+                key: heroes-service-host
+          - name: HEROES_SERVICE_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: fight-config
+                key: heroes-service-port

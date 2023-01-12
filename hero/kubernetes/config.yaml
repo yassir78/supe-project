@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: heroes-config
+data:
+  database: "jdbc:postgresql://heroes-database:5432/heroes"
