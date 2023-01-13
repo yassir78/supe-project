@@ -18,11 +18,31 @@ spec:
     spec:
       containers:
       - name: heroes-service
-        image: chaosmaker/heroes-service:1.0.0
+        image: chaosmaker/heroes-service:latest
         ports:
         - name: http
           containerPort: 8080
         imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /q/health/live
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 0
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /q/health/ready
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 0
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 5
         env:
           - name: DATABASE_URL
             valueFrom:
