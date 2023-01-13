@@ -1,0 +1,36 @@
+# This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
+# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
+
+name: Maven Package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v4.3
+      with:
+        maven-version: 3.8.5
+    - name: 🔧 Setup
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build
+      run: |
+        mvn -f fight/pom.xml clean install
+        mvn -f hero/pom.xml clean install
+        mvn -f villain/pom.xml clean install
+        
