@@ -44,11 +44,6 @@ jobs:
         docker build -f hero/src/main/docker/Dockerfile.jvm -t chaosmaker/hero-service:${{ env.BUILD_IMAGE_TAG }} hero/
         mvn -f villain/pom.xml clean install
         docker build -f villain/src/main/docker/Dockerfile.jvm -t chaosmaker/villain-service:${{ env.BUILD_IMAGE_TAG }} villain/
-#    - name: Push
-#      run: |
-#        docker push chaosmaker/fight-service:${{ env.BUILD_IMAGE_TAG }}
-#        docker push chaosmaker/hero-service:${{ env.BUILD_IMAGE_TAG }}
-#        docker push chaosmaker/villain-service:${{ env.BUILD_IMAGE_TAG }}
     - name: Push images to registry
       run: |
         docker push chaosmaker/fight-service:${{ env.BUILD_IMAGE_TAG }}
