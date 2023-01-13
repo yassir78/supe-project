@@ -18,7 +18,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: 🔧 Setup
+    - name: 🔧 Setup Jaava
       uses: actions/setup-java@v2
       with:
         java-version: '17'
@@ -36,7 +36,7 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - name: Set Image Tag
       run : echo "BUILD_IMAGE_TAG=${GITHUB_REF_NAME}-${GITHUB_SHA}" >> $GITHUB_ENV
-    - name: Build
+    - name: package and build docker images
       run: |
         mvn -f fight/pom.xml clean install
         docker build -f fight/src/main/docker/Dockerfile.jvm -t chaosmaker/fight-service:${{ env.BUILD_IMAGE_TAG }} fight/
@@ -49,7 +49,7 @@ jobs:
 #        docker push chaosmaker/fight-service:${{ env.BUILD_IMAGE_TAG }}
 #        docker push chaosmaker/hero-service:${{ env.BUILD_IMAGE_TAG }}
 #        docker push chaosmaker/villain-service:${{ env.BUILD_IMAGE_TAG }}
-    - name: Push
+    - name: Push images to registry
       run: |
         docker push chaosmaker/fight-service:${{ env.BUILD_IMAGE_TAG }}
         docker push chaosmaker/hero-service:${{ env.BUILD_IMAGE_TAG }}
