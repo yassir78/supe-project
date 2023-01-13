@@ -39,16 +39,21 @@ jobs:
     - name: Build
       run: |
         mvn -f fight/pom.xml clean install
-        docker build -f fight/src/main/docker/Dockerfile.jvm -t chaosmaker/fight-service fight/
+        docker build -f fight/src/main/docker/Dockerfile.jvm -t chaosmaker/fight-service:${{ env.BUILD_IMAGE_TAG }} fight/
         mvn -f hero/pom.xml clean install
-        docker build -f hero/src/main/docker/Dockerfile.jvm -t chaosmaker/hero-service hero/
+        docker build -f hero/src/main/docker/Dockerfile.jvm -t chaosmaker/hero-service:${{ env.BUILD_IMAGE_TAG }} hero/
         mvn -f villain/pom.xml clean install
-        docker build -f villain/src/main/docker/Dockerfile.jvm -t chaosmaker/villain-service villain/
+        docker build -f villain/src/main/docker/Dockerfile.jvm -t chaosmaker/villain-service:${{ env.BUILD_IMAGE_TAG }} villain/
 #    - name: Push
 #      run: |
-#        docker push chaosmaker/fight-service
-#        docker push chaosmaker/hero-service
-#        docker push chaosmaker/villain-service
+#        docker push chaosmaker/fight-service:${{ env.BUILD_IMAGE_TAG }}
+#        docker push chaosmaker/hero-service:${{ env.BUILD_IMAGE_TAG }}
+#        docker push chaosmaker/villain-service:${{ env.BUILD_IMAGE_TAG }}
+    - name: Push
+      run: |
+        docker push chaosmaker/fight-service:${{ env.BUILD_IMAGE_TAG }}
+        docker push chaosmaker/hero-service:${{ env.BUILD_IMAGE_TAG }}
+        docker push chaosmaker/villain-service:${{ env.BUILD_IMAGE_TAG }}
     
 
         
